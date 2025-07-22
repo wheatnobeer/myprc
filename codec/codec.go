@@ -14,6 +14,7 @@ type Codec interface {
 	ReadBody(interface{}) error
 	Write(*Header, interface{}) error
 }
+
 type NewCodecFunc func(io.ReadWriteCloser) Codec
 
 type Type string
