@@ -33,8 +33,6 @@ func (m *methodType) newReplyv() reflect.Value {
 		replyv.Elem().Set(reflect.MakeMap(m.ReplyType.Elem()))
 	case reflect.Slice:
 		replyv.Elem().Set(reflect.MakeSlice(m.ReplyType.Elem(), 0, 0))
-	default:
-		panic("unhandled default case")
 	}
 	return replyv
 }
