@@ -24,7 +24,7 @@ type Discovery interface {
 
 // MultiServersDiscovery is a discovery for multi servers without a registry center
 // user provides the server addresses explicitly instead
-type MultiSeversDiscovery struct {
+type MultiServersDiscovery struct {
 	r       *rand.Rand
 	mu      sync.RWMutex
 	servers []string
@@ -32,19 +32,19 @@ type MultiSeversDiscovery struct {
 }
 
 // Refresh doesn't make sense for MultiServersDiscovery, so ignore it
-func (d *MultiSeversDiscovery) Refresh() error {
+func (d *MultiServersDiscovery) Refresh() error {
 	return nil
 }
 
 // Update the servers of discovery dynamically if needed
-func (d *MultiSeversDiscovery) Update(servers []string) error {
+func (d *MultiServersDiscovery) Update(servers []string) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	d.servers = servers
 	return nil
 }
 
-func (d *MultiSeversDiscovery) Get(mode SelectMode) (string, error) {
+func (d *MultiServersDiscovery) Get(mode SelectMode) (string, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	n := len(d.servers)
@@ -63,7 +63,7 @@ func (d *MultiSeversDiscovery) Get(mode SelectMode) (string, error) {
 	}
 }
 
-func (d *MultiSeversDiscovery) GetAll() ([]string, error) {
+func (d *MultiServersDiscovery) GetAll() ([]string, error) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	servers := make([]string, len(d.servers), len(d.servers))
@@ -71,8 +71,8 @@ func (d *MultiSeversDiscovery) GetAll() ([]string, error) {
 	return servers, nil
 }
 
-func NewMultiServerDiscovery(severs []string) *MultiSeversDiscovery {
-	d := &MultiSeversDiscovery{
+func NewMultiServerDiscovery(severs []string) *MultiServersDiscovery {
+	d := &MultiServersDiscovery{
 		servers: severs,
 		r:       rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
@@ -80,4 +80,4 @@ func NewMultiServerDiscovery(severs []string) *MultiSeversDiscovery {
 	return d
 }
 
-var _ Discovery = (*MultiSeversDiscovery)(nil)
+var _ Discovery = (*MultiServersDiscovery)(nil)
